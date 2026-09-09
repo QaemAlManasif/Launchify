@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Launchify Setup Guide — iCUE Widget for the XENEON EDGE</title>
+  <meta name="description" content="How to install Launchify on your CORSAIR XENEON EDGE. Two files, three steps, about two minutes. No account, nothing to configure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #0b0a09;
+      --surface:   #171514;
+      --surface-2: #100e0d;
+      --border:    #2b2724;
+      --border-hi: #3a3532;
+      --accent:    #ff6b35;
+      --accent-2:  #e2551f;
+      --green:     #3ba55d;
+      --amber:     #d99a2b;
+      --red:       #d83c3e;
+      --text:      #f4f2f0;
+      --muted:     #a09a95;
+      --dim:       #6b6560;
+      --r-lg: 14px;
+      --r-md: 10px;
+      --r-sm: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.62;
+      padding: 0 20px 80px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: .88em;
+      color: #ffc4a8;
+    }
+
+    a { color: var(--accent); }
+
+    /* ---------- header ---------- */
+    header {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 26px 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 13px; text-decoration: none; color: inherit; }
+    .brand-logo {
+      width: 38px; height: 38px;
+      background: #100e0d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: grid; place-items: center;
+    }
+    .brand-logo svg { width: 21px; height: 21px; fill: var(--accent); }
+    .brand-name { font-size: 20px; font-weight: 800; letter-spacing: -.4px; }
+    .brand-name span { color: var(--accent); }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 12.5px; font-weight: 600; color: var(--muted);
+    }
+    .dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+
+    main { max-width: 860px; margin: 0 auto; }
+
+    /* ---------- hero ---------- */
+    .hero { padding: 44px 0 36px; }
+    .hero h1 {
+      font-size: clamp(29px, 5vw, 40px);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.18;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 16.5px; color: var(--muted); max-width: 680px; }
+    .chips { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      font-size: 12.5px; font-weight: 600; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 100px; padding: 6px 14px;
+    }
+
+    .shot {
+      width: 100%; display: block; border-radius: var(--r-lg);
+      border: 1px solid var(--border); margin-top: 26px;
+    }
+
+    /* ---------- sections ---------- */
+    .section { margin-bottom: 46px; }
+    .section-head { margin-bottom: 20px; padding-bottom: 13px; border-bottom: 1px solid var(--border); }
+    .section-head h2 { font-size: 24px; font-weight: 800; letter-spacing: -.5px; }
+    .section-head p { color: var(--muted); font-size: 14.5px; margin-top: 7px; }
+
+    /* ---------- prerequisites ---------- */
+    .req-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 720px) { .req-grid { grid-template-columns: 1fr 1fr; } }
+    .req {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 16px 18px;
+      display: flex; gap: 13px; align-items: flex-start;
+    }
+    .req .tick {
+      width: 20px; height: 20px; flex: none; border-radius: 50%;
+      background: var(--surface-2); border: 1px solid var(--border-hi);
+      display: grid; place-items: center; font-size: 11px; color: var(--green);
+      margin-top: 3px;
+    }
+    .req h4 { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+    .req p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+    /* ---------- steps ---------- */
+    .steps { display: flex; flex-direction: column; gap: 18px; }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 26px 28px;
+    }
+    .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 13px; }
+    .step-number {
+      width: 32px; height: 32px; flex: none;
+      background: var(--surface-2); border: 1px solid var(--border-hi);
+      color: var(--accent); border-radius: 9px;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .step-title { font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+    .step > p { color: var(--muted); font-size: 14.5px; }
+
+    .substeps { list-style: none; counter-reset: sub; margin: 14px 0 0; }
+    .substeps li {
+      counter-increment: sub;
+      position: relative;
+      padding-left: 32px;
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-bottom: 10px;
+    }
+    .substeps li:last-child { margin-bottom: 0; }
+    .substeps li::before {
+      content: counter(sub);
+      position: absolute; left: 0; top: 1px;
+      width: 21px; height: 21px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 700; color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .substeps li b, .step p b { color: var(--text); font-weight: 700; }
+
+    .action-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: var(--r-md);
+      font-size: 14px; font-weight: 700; text-decoration: none;
+      cursor: pointer; border: none; font-family: inherit;
+      transition: background .15s ease;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-2); }
+    .btn-ghost {
+      background: var(--surface-2); color: var(--muted);
+      border: 1px solid var(--border-hi);
+    }
+    .btn-ghost:hover { background: var(--surface); color: var(--text); }
+
+    .file-row {
+      display: flex; align-items: center; gap: 13px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 13px 16px; margin-top: 12px;
+    }
+    .file-row .ico {
+      width: 30px; height: 30px; flex: none; border-radius: 8px;
+      background: rgba(255,107,53,.14); border: 1px solid rgba(255,140,95,.3);
+      display: grid; place-items: center; color: var(--accent); font-size: 14px; font-weight: 800;
+    }
+    .file-row .fname { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #ffc4a8; }
+    .file-row .fwhat { font-size: 13px; color: var(--muted); }
+
+    /* ---------- callouts ---------- */
+    .callout {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      background: var(--surface-2);
+      border-radius: var(--r-sm);
+      padding: 13px 17px;
+      margin-top: 15px;
+      font-size: 13.8px;
+      color: var(--muted);
+    }
+    .callout b { color: var(--text); }
+    .callout.warn { border-left-color: var(--amber); }
+    .callout.good { border-left-color: var(--green); }
+    .callout.dang { border-left-color: var(--red); }
+    .callout-label {
+      display: block;
+      font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase; margin-bottom: 4px; color: var(--accent);
+    }
+    .callout.warn .callout-label { color: var(--amber); }
+    .callout.good .callout-label { color: var(--green); }
+    .callout.dang .callout-label { color: var(--red); }
+
+    /* ---------- state legend ---------- */
+    .legend { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 720px) { .legend { grid-template-columns: 1fr 1fr; } }
+    .legend-row {
+      display: flex; align-items: center; gap: 13px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 13px 16px;
+    }
+    .pip { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+    .pip.run { background: var(--accent); }
+    .pip.min { box-shadow: inset 0 0 0 2px var(--accent); }
+    .pip.tray { box-shadow: inset 0 0 0 2px var(--accent); opacity: .55; }
+    .pip.front { background: var(--accent); box-shadow: 0 0 0 4px rgba(255,107,53,.28); }
+    .pip.off { background: #3a3532; }
+    .legend-row b { font-size: 14px; font-weight: 700; }
+    .legend-row span { font-size: 13.2px; color: var(--muted); }
+
+    /* ---------- troubleshooting ---------- */
+    details.tsh {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    details.tsh summary {
+      cursor: pointer; padding: 15px 19px;
+      font-size: 15px; font-weight: 700; color: var(--text);
+      list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center;
+    }
+    details.tsh summary::-webkit-details-marker { display: none; }
+    details.tsh summary::after { content: '+'; color: var(--accent); font-size: 18px; font-weight: 700; flex: none; }
+    details.tsh[open] summary::after { content: '−'; }
+    details.tsh .tsh-body { padding: 0 19px 17px; font-size: 14px; color: var(--muted); }
+    details.tsh .tsh-body ul { margin: 8px 0 0 20px; }
+    details.tsh .tsh-body li { margin-bottom: 6px; }
+    details.tsh .tsh-body b { color: var(--text); }
+
+    footer {
+      max-width: 860px; margin: 60px auto 0;
+      text-align: center; font-size: 13px; color: var(--dim);
+      border-top: 1px solid var(--border); padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#top" class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 72 72" aria-hidden="true">
+          <path d="M36 5 61 33H11z"/>
+          <rect x="28" y="29" width="16" height="28" rx="6"/>
+          <rect x="31" y="62" width="10" height="6" rx="3"/>
+          <rect x="16" y="62" width="8" height="6" rx="3"/>
+          <rect x="48" y="62" width="8" height="6" rx="3"/>
+        </svg>
+      </div>
+      <div class="brand-name">Launchify <span>Setup Guide</span></div>
+    </a>
+    <div class="header-badge">
+      <div class="dot"></div>
+      XENEON EDGE ready
+    </div>
+  </header>
+
+  <main id="top">
+
+    <div class="hero">
+      <h1>Install <span>Launchify</span> in two minutes</h1>
+      <p>
+        Two files, three steps. There's no account to make, no keys to paste and nothing to
+        configure — run the installer once, import the widget in iCUE, and start pinning apps.
+      </p>
+      <div class="chips">
+        <span class="chip">⏱ About 2 minutes</span>
+        <span class="chip">🔁 One-time install</span>
+        <span class="chip">🔒 No account, no internet</span>
+      </div>
+      <img class="shot" src="assets/hero.png" alt="Launchify running on a XENEON EDGE, showing app tiles with live state">
+    </div>
+
+    <!-- ============ REQUIREMENTS ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Before you start</h2>
+        <p>Four things, and you almost certainly have all of them.</p>
+      </div>
+      <div class="req-grid">
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>A CORSAIR dashboard LCD</h4>
+            <p>Built for the XENEON EDGE, and works on any iCUE dashboard screen.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>iCUE 5.45 or newer</h4>
+            <p>Older versions can't load widgets built on the current framework.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Windows 10 or later, 64-bit</h4>
+            <p>The helper is a Windows app — it reads the desktop's own windows.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Nothing else</h4>
+            <p>No account, no Stream Deck, no Nitro, no internet connection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STEPS ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Install</h2>
+        <p>Do these once. Every app you pin afterwards just works.</p>
+      </div>
+
+      <div class="steps">
+
+        <!-- STEP 1 -->
+        <div class="step">
+          <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Download the two files</div>
+          </div>
+          <p>Both are on the releases page. Grab them into your Downloads folder.</p>
+
+          <div class="file-row">
+            <div class="ico">⤓</div>
+            <div>
+              <div class="fname">Launchify Helper Setup.exe</div>
+              <div class="fwhat">The background helper, and its installer.</div>
+            </div>
+          </div>
+          <div class="file-row">
+            <div class="ico">⤓</div>
+            <div>
+              <div class="fname">launchify.icuewidget</div>
+              <div class="fwhat">The widget you import into iCUE.</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <a class="btn btn-primary" href="https://github.com/qaemalmanasif/Launchify/releases/latest">Open the latest release</a>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step">
+          <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">Run the installer</div>
+          </div>
+          <p>
+            Double-click <b>Launchify Helper Setup.exe</b>. It installs the helper to
+            <code>%LOCALAPPDATA%\Launchify</code>, sets it to start with Windows, adds an entry
+            under Settings → Apps so you can remove it later, and starts it. Click <b>OK</b> on
+            the "You're all set!" dialog and you're done with this step.
+          </p>
+
+          <div class="callout warn">
+            <span class="callout-label">Expect a SmartScreen warning</span>
+            The installer isn't code-signed, so Windows shows <b>"Windows protected your PC"</b>.
+            Click <b>More info</b>, then <b>Run anyway</b>. If you'd rather check first, the whole
+            helper is open source in this repository and you can build it yourself.
+          </div>
+
+          <div class="callout">
+            <span class="callout-label">What the helper is for</span>
+            A widget is a web page, and a web page can't start a program or touch a window. The
+            helper does that part: it watches your windows, reports which apps are running, and
+            carries out launch, focus, minimize, close and move. It has <b>no window and no tray
+            icon</b>, and it idles down whenever iCUE isn't running.
+          </div>
+
+          <div class="callout good">
+            <span class="callout-label">Prefer portable?</span>
+            You can skip the installer and run <code>LaunchifyHelper.exe</code> directly. Same
+            program — it just won't start with Windows until you switch that on in the widget's
+            Preferences.
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step">
+          <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Import the widget in iCUE</div>
+          </div>
+          <ol class="substeps">
+            <li>Open <b>iCUE</b> and select your <b>XENEON EDGE</b> from the device list.</li>
+            <li>Go to the <b>Widgets</b> (dashboard) section for the screen.</li>
+            <li>Choose <b>Import widget</b> and pick <b>launchify.icuewidget</b>.</li>
+            <li>Drag <b>Launchify</b> onto a screen area and size it however you like.</li>
+          </ol>
+
+          <div class="callout">
+            <span class="callout-label">It should connect straight away</span>
+            The dot next to the name in the widget's header turns <b>green</b> when it finds the
+            helper. If it says <i>Waiting for Launchify Helper…</i>, tap the
+            <b>Launch Launchify Helper</b> button on that screen.
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step">
+          <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">Pin your first app</div>
+          </div>
+          <ol class="substeps">
+            <li>Tap <b>+</b> in the header (or <b>Add your first app</b>).</li>
+            <li><b>Running now</b> lists everything with a window this second. <b>Installed</b> is your Start Menu. <b>Browse…</b> opens a file picker for anything else.</li>
+            <li>Tap an app to pin it. The row marks itself <b>✓ Added</b> and the picker stays open, so keep going.</li>
+            <li>Tap <b>‹</b> when you're done. Your apps are waiting on the grid.</li>
+          </ol>
+          <img class="shot" src="assets/add.png" alt="The Add an app picker beside the pinned apps">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ READING THE TILES ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Reading a tile</h2>
+        <p>The dot and the line under the name tell you what the app is doing right now.</p>
+      </div>
+      <div class="legend">
+        <div class="legend-row">
+          <div class="pip off"></div>
+          <div><b>Closed</b> &nbsp;<span>— dim icon. A tap launches it.</span></div>
+        </div>
+        <div class="legend-row">
+          <div class="pip run"></div>
+          <div><b>Running</b> &nbsp;<span>— a tap brings it forward.</span></div>
+        </div>
+        <div class="legend-row">
+          <div class="pip min"></div>
+          <div><b>Minimized</b> &nbsp;<span>— hollow dot. A tap restores it.</span></div>
+        </div>
+        <div class="legend-row">
+          <div class="pip tray"></div>
+          <div><b>In tray</b> &nbsp;<span>— running with no window at all.</span></div>
+        </div>
+        <div class="legend-row">
+          <div class="pip front"></div>
+          <div><b>In front</b> &nbsp;<span>— ringed. The window you're in.</span></div>
+        </div>
+        <div class="legend-row">
+          <div class="pip" style="background:#d83c3e"></div>
+          <div><b>Close?</b> &nbsp;<span>— waiting for a second tap to confirm.</span></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Worth knowing</span>
+        <b>Running · 3</b> means three windows. A <b>×2</b> chip means the app is running more
+        than once. On more than one monitor, the small number in the corner is the screen it's on
+        — open the app menu (long-press) to send it to another.
+      </div>
+    </section>
+
+    <!-- ============ MAKE IT YOURS ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Make it yours</h2>
+        <p>Everything below is in the widget's gear, and in iCUE's own widget settings panel.</p>
+      </div>
+      <div class="req-grid">
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Assign every gesture</h4>
+            <p>Preferences → Touch. A tap gets three bindings (closed, running, in front); double tap and long press get one each.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Arrange without the menu</h4>
+            <p>Tap the pencil for <code>‹ › ✕</code> straight on every app.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Grid or list, any size</h4>
+            <p>App size runs 60–180%. Names and state lines can go off entirely.</p>
+          </div>
+        </div>
+        <div class="req">
+          <div class="tick">✓</div>
+          <div>
+            <h4>Colour the badges</h4>
+            <p>The dot, the state line, the ×2 chip and the monitor number each have their own colour and switch.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-label">Lost the gear?</span>
+        If you turn the header (or the Preferences button) off, <b>long-press the empty
+        background for about a second</b> to bring the dialog back.
+      </div>
+    </section>
+
+    <!-- ============ TROUBLESHOOTING ============ -->
+    <section class="section" id="troubleshooting">
+      <div class="section-head">
+        <h2>If something doesn't work</h2>
+        <p>In rough order of how often it comes up.</p>
+      </div>
+
+      <details class="tsh">
+        <summary>The widget says "Waiting for Launchify Helper…"</summary>
+        <div class="tsh-body">
+          The helper isn't running.
+          <ul>
+            <li>Tap <b>Launch Launchify Helper</b> on that screen — it starts the installed copy.</li>
+            <li>If nothing happens, run <b>Launchify Helper Setup.exe</b> once. The button relies on the <code>launchify://</code> handler the installer registers.</li>
+            <li>Check it's alive: Task Manager → Details → <code>LaunchifyHelper.exe</code>.</li>
+            <li>Log file, if you want to look: <code>%LOCALAPPDATA%\Launchify\helper.log</code>.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>Windows blocked the installer</summary>
+        <div class="tsh-body">
+          <b>"Windows protected your PC"</b> appears for any installer that isn't code-signed —
+          click <b>More info → Run anyway</b>. If your browser refused the download instead, use
+          <b>Keep</b> / <b>Keep anyway</b> in its downloads list. The source is in this repository
+          if you'd rather build it yourself.
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>An app shows as closed while it's clearly running</summary>
+        <div class="tsh-body">
+          Launchify matches a pinned app to a running one by its exe path, falling back to the exe
+          name.
+          <ul>
+            <li>Some launchers start a <b>different copy</b> of the exe than the shortcut points at (per-version folders, updaters). Re-pin the app from <b>Running now</b> while it's open — that pins the exe actually in use.</li>
+            <li><b>Store apps</b> that have never been started don't appear under <b>Installed</b> at all; open the app once and pin it from <b>Running now</b>.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>A window won't come to the front</summary>
+        <div class="tsh-body">
+          Windows only lets the foreground app hand focus over. Launchify does the standard dance
+          to get around that, but two cases still win:
+          <ul>
+            <li>A <b>full-screen exclusive game</b> holds focus — alt-tab out of it first.</li>
+            <li>An app that's <b>busy or not responding</b> can't be brought forward until it answers. <b>Force close</b> in the app menu is the way out.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>Moving an app to another monitor does nothing, or it snaps back</summary>
+        <div class="tsh-body">
+          <ul>
+            <li>The app needs a <b>window</b> — a tray app has none to move.</li>
+            <li>Some apps <b>manage their own placement</b> and restore their saved position immediately. There's no way around that from outside the app.</li>
+            <li><b>Opens on</b> waits about twelve seconds for the app's first window. An app that takes longer than that to draw one won't be placed.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>An icon is missing, or the wrong one</summary>
+        <div class="tsh-body">
+          Icons are read from the exe and cached in <code>%LOCALAPPDATA%\Launchify\icons</code>. A
+          few apps ship a stub exe with a generic icon. Deleting that folder makes the helper read
+          them all again next time the widget asks.
+        </div>
+      </details>
+
+      <details class="tsh">
+        <summary>I want it gone</summary>
+        <div class="tsh-body">
+          <b>Settings → Apps → Launchify Helper</b>, or run
+          <code>"Launchify Helper Setup.exe" /uninstall</code>. That removes the helper, its
+          start-with-Windows entry, the <code>launchify://</code> handler and the icon cache.
+          Remove the widget itself from iCUE separately.
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PRIVACY ============ -->
+    <section class="section">
+      <div class="section-head">
+        <h2>What it does and doesn't do</h2>
+      </div>
+      <div class="callout good">
+        <span class="callout-label">No network, at all</span>
+        Launchify makes no requests to anything. The helper listens on
+        <code>127.0.0.1:57131</code> for the widget on the same PC, and that is the whole of its
+        networking. No account, no telemetry, no cloud. Your pinned apps live in the widget;
+        the icon cache and log stay in <code>%LOCALAPPDATA%\Launchify</code>.
+      </div>
+      <div class="callout">
+        <span class="callout-label">Closing is always polite</span>
+        <b>Close app</b> sends the same request clicking the X does, so an app with unsaved work
+        still gets to ask you about it. <b>Force close</b> is the other one — Task Manager's End
+        task — which is why the widget asks twice first.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Launchify — an iCUE widget for the CORSAIR XENEON EDGE. Built by <b>QAEM</b>.<br>
+    <a href="https://github.com/qaemalmanasif/Launchify">Source and releases on GitHub</a>
+  </footer>
+
+</body>
+</html>
